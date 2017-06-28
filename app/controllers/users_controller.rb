@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
-
+  before_action :authenticate_user
   def show
-    render json: User.find(params[:id])
+    user = User.find(params[:id])
+    if user == current_user
+      render json: User.find(params[:id])
+    end
   end
-  
+
   def create
     user = User.new(user_params)
     if user.save
